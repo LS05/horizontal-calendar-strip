@@ -82,7 +82,7 @@ export default class CalendarStrip extends Component {
             if(props.locale.name && props.locale.config) {
                 moment.locale(props.locale.name, props.locale.config);
             } else {
-                throw new Error('Locale prop is not in the correct format. \b Locale has to be in form of object, with params NAME and CONFIG!');
+                throw new Error('Locale prop is not in the correct format. \b Locale has to be an object, with fields NAME and CONFIG!');
             }
         }
 
@@ -340,7 +340,6 @@ export default class CalendarStrip extends Component {
                       selection={this.props.selection}
                       selectionAnimation={this.props.selectionAnimation}
                       borderHighlightColor={this.props.borderHighlightColor}
-                      activeDayCoord={this.scrollToActiveDay}
                   />
               </Animated.View>
           );
