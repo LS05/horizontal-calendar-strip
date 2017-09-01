@@ -11,6 +11,7 @@ import {
     ScrollView
 } from 'react-native';
 import CalendarDay from './CalendarDay';
+import CalendarButton from './CalendarButton';
 import moment from 'moment';
 import styles from './Calendar.style.js';
 
@@ -377,9 +378,13 @@ export default class CalendarStrip extends Component {
       return (
           <View style={[styles.calendarContainer, {backgroundColor: this.props.calendarColor}, this.props.style]}>
               <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
-                <B_Button onPress={() => { this.onTapB() }} />
+                <CalendarButton
+                    onPress={this.onTapB}
+                    buttonImage={require('./img/arrow-left.png')} />
                 {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>}
-                <F_Button onPress={() => { this.onTapF() }} />
+                <CalendarButton
+                    onPress={this.onTapF}
+                    buttonImage={require('./img/arrow-right.png')} />
               </View>
               <ScrollView pagingEnabled={this.props.pagingEnabled}
                           horizontal={true}
