@@ -25,36 +25,6 @@ let arrInit = function(date) {
 }
 arrInit(moment());
 
-class F_Button extends Component {
-  render() {
-    return (
-      <TouchableHighlight
-        underlayColor={'white'}
-        activeOpacity={0.7}
-        onPress={() => { this.props.onPress() }}>
-        <View style={styles.FButton}>
-          <Image style={styles.FButtonImage} source={require('./img/arrow-right.png')}/>
-        </View>
-      </TouchableHighlight>
-    );
-  }
-}
-
-class B_Button extends Component {
-  render() {
-    return (
-      <TouchableHighlight
-        underlayColor={'white'}
-        activeOpacity={0.7}
-        onPress={() => { this.props.onPress() }}>
-        <View style={styles.BButton}>
-          <Image style={styles.BButtonImage} source={require('./img/arrow-left.png')}/>
-        </View>
-      </TouchableHighlight>
-    );
-  }
-}
-
 /*
  * Class CalendarStrip that is representing the whole calendar strip and contains CalendarDay elements
  *
@@ -381,7 +351,9 @@ export default class CalendarStrip extends Component {
                 <CalendarButton
                     onPress={this.onTapB}
                     buttonImage={require('./img/arrow-left.png')} />
-                {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>}
+                    {
+                      <Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>
+                    }
                 <CalendarButton
                     onPress={this.onTapF}
                     buttonImage={require('./img/arrow-right.png')} />
