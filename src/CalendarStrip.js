@@ -95,48 +95,12 @@ export default class CalendarStrip extends Component {
             month: moment().month()
         };
 
-        this.onTapF = () => {
-          this.scrolled = false;
-          this.scrollToActiveDay(0);
-          let incMonth = this.state.month;
-          let forwaredDate = moment().month(incMonth + 1).startOf('month');
-          if (forwaredDate.month() <= moment().month()){
-            this.setDay(forwaredDate);
-            this.setState({
-              month: forwaredDate.month(),
-              startingDate: forwaredDate,
-              selectedDate: forwaredDate
-            }, function(){
-              this.onDateSelected(forwaredDate);
-            });
-            this.state.month++;
-          }
-        }
-
-        this.onTapB = () => {
-          this.scrolled = false;
-          this.scrollToActiveDay(0);
-          let incMonth = this.state.month;
-          let backwardedDate = moment().month(incMonth - 1).startOf('month');
-          if (backwardedDate.year() === moment().year()){
-            this.setDay(backwardedDate);
-            this.setState({
-              month: backwardedDate.month(),
-              startingDate: backwardedDate,
-              selectedDate: backwardedDate
-            }, function(){
-              this.onDateSelected(backwardedDate);
-            });
-            this.state.month--;
-          }
-        }
-
         this.resetAnimation();
 
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentWillUpdate = this.componentWillUpdate.bind(this);
         this.getDatesForMonth = this.getDatesForMonth.bind(this);
-        this.onDateSelected = this.onDateSelected.bind(this);
+        this.onSelectDate = this.onSelectDate.bind(this);
         this.isDateSelected = this.isDateSelected.bind(this);
         this.formatCalendarHeader = this.formatCalendarHeader.bind(this);
         this.animate = this.animate.bind(this);
@@ -144,8 +108,51 @@ export default class CalendarStrip extends Component {
         this.scrollToActiveDay = this.scrollToActiveDay.bind(this);
         this.setDay = this.setDay.bind(this);
         this.scrollDays = this.scrollDays.bind(this);
+        this.scrollDays = this.scrollDays.bind(this);
+        this.updateDate = this.updateDate.bind(this);
+        this.forwardDate = this.forwardDate.bind(this);
+        this.backwardDate = this.backwardDate.bind(this);
         this.days = [];
         this.scrolled = false;
+    }
+
+    handleButtonPress(direction) {
+      this.scrolled = false;
+      this.scrollToActiveDay(0);
+      let currentMonth = this.state.month;
+      direction(currentMonth);
+    }
+
+    forwardDate(currentMonth) {
+      let forwaredDate = moment().month(currentMonth + 1).startOf('month');
+      if (forwaredDate.month() <= moment().month()){
+        this.updateDate(forwaredDate)
+      }
+    }
+
+    backwardDate(currentMonth) {
+      let backwardedDate = moment().month(currentMonth - 1).startOf('month');
+      if (backwardedDate.year() === moment().year()){
+        this.updateDate(backwardedDate)
+      }
+    }
+
+    updateDate(date) {
+      this.setDay(date);
+      this.setState({
+        month: date.month(),
+        startingDate: date,
+        selectedDate: date
+      }, function() {
+        this.onSelectDate(date);
+      });
+    }
+
+    onSelectDate(date) {
+        this.setState({selectedDate: date});
+        if (this.props.onDateSelected) {
+            this.props.onDateSelected(date);
+        }
     }
 
     setDay(date) {
@@ -223,13 +230,6 @@ export default class CalendarStrip extends Component {
         return dates;
     }
 
-    //Handling press on date/selecting date
-    onDateSelected(date) {
-        this.setState({selectedDate: date});
-        if (this.props.onDateSelected) {
-            this.props.onDateSelected(date);
-        }
-    }
 
     //Function to check if provided date is the same as selected one, hence date is selected
     //using isSame moment query with 'day' param so that it check years, months and day
@@ -327,7 +327,7 @@ export default class CalendarStrip extends Component {
                         _strip.days.push(instance);
                       }}
                       selected={this.isDateSelected(date)}
-                      onDateSelected={this.onDateSelected}
+                      onDateSelected={this.onSelectDate}
                       calendarColor={this.props.calendarColor}
                       highlightColor={this.props.highlightColor}
                       dateNameStyle={this.props.dateNameStyle}
@@ -348,13 +348,13 @@ export default class CalendarStrip extends Component {
           <View style={[styles.calendarContainer, {backgroundColor: this.props.calendarColor}, this.props.style]}>
               <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
                 <CalendarButton
-                    onPress={this.onTapB}
+                    onPress={ () => {this.handleButtonPress(this.backwardDate)} }
                     buttonImage={require('./img/arrow-left.png')} />
                     {
                       <Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>
                     }
                 <CalendarButton
-                    onPress={this.onTapF}
+                    onPress={ () => {this.handleButtonPress(this.forwardDate)} }
                     buttonImage={require('./img/arrow-right.png')} />
               </View>
               <ScrollView pagingEnabled={this.props.pagingEnabled}
