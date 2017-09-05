@@ -55,11 +55,11 @@ export default class CalendarStrip extends Component {
 
         dateNameStyle: React.PropTypes.any,
         dateNumberStyle: React.PropTypes.any,
-        weekendDateNameStyle: React.PropTypes.any,
-        weekendDateNumberStyle: React.PropTypes.any,
+        weekendDateNameColor: React.PropTypes.any,
+        weekendDateNumberColor: React.PropTypes.any,
         highlightDateNameStyle: React.PropTypes.any,
         highlightDateNumberStyle: React.PropTypes.any,
-        styleWeekend: React.PropTypes.bool,
+        disableWeekends: React.PropTypes.bool,
 
         pagingEnabled: React.PropTypes.bool,
         showsHorizontalScrollIndicator: React.PropTypes.bool,
@@ -331,14 +331,14 @@ export default class CalendarStrip extends Component {
                       highlightColor={this.props.highlightColor}
                       dateNameStyle={this.props.dateNameStyle}
                       dateNumberStyle={this.props.dateNumberStyle}
-                      weekendDateNameStyle={this.props.weekendDateNameStyle}
-                      weekendDateNumberStyle={this.props.weekendDateNumberStyle}
+                      weekendDateNameColor={this.props.weekendDateNameColor}
+                      weekendDateNumberColor={this.props.weekendDateNumberColor}
                       highlightDateNameStyle={this.props.highlightDateNameStyle}
                       highlightDateNumberStyle={this.props.highlightDateNumberStyle}
-                      styleWeekend={this.props.styleWeekend}
                       selection={this.props.selection}
                       selectionAnimation={this.props.selectionAnimation}
                       borderHighlightColor={this.props.borderHighlightColor}
+                      disableWeekends={this.props.disableWeekends}
                   />
               </Animated.View>
           );
@@ -347,13 +347,13 @@ export default class CalendarStrip extends Component {
           <View style={[styles.calendarContainer, {backgroundColor: this.props.calendarColor}, this.props.style]}>
               <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
                 <CalendarButton
-                    onPress={ () => {this.handleButtonPress(this.backwardDate)} }
+                    onPress={() => {this.handleButtonPress(this.backwardDate)}}
                     buttonImage={require('./img/arrow-left.png')} />
-                    {
-                      <Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>
-                    }
+                      {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>
+                          {this.formatCalendarHeader()}
+                      </Text>}
                 <CalendarButton
-                    onPress={ () => {this.handleButtonPress(this.forwardDate)} }
+                    onPress={() => {this.handleButtonPress(this.forwardDate)}}
                     buttonImage={require('./img/arrow-right.png')} />
               </View>
               <ScrollView pagingEnabled={this.props.pagingEnabled}

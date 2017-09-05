@@ -45,11 +45,6 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center'
     },
-    weekendDateName: {
-        fontSize: 10,
-        color: '#A9A9A9',
-        textAlign: 'center'
-    },
     weekendDateNumber: {
         fontSize: 18,
         color: '#A9A9A9',

@@ -23,14 +23,15 @@ export default class CalendarDay extends Component {
 
         dateNameStyle: React.PropTypes.any,
         dateNumberStyle: React.PropTypes.any,
-        weekendDateNameStyle: React.PropTypes.any,
-        weekendDateNumberStyle: React.PropTypes.any,
+        weekendDateNameColor: React.PropTypes.any,
+        weekendDateNumberColor: React.PropTypes.any,
         highlightDateNameStyle: React.PropTypes.any,
         highlightDateNumberStyle: React.PropTypes.any,
         styleWeekend: React.PropTypes.bool,
 
         selection: React.PropTypes.string,
         selectionAnimation: React.PropTypes.object,
+        disableWeekends: React.PropTypes.bool
     };
 
     static defaultProps = {
@@ -40,7 +41,8 @@ export default class CalendarDay extends Component {
             borderWidth: 1
         },
         borderHighlightColor: '#000',
-        styleWeekend: true
+        styleWeekend: true,
+        disableWeekends: false
     };
 
     constructor(props) {
@@ -50,7 +52,6 @@ export default class CalendarDay extends Component {
         this.isToday = this.isToday.bind(this);
         this.isAfter = this.isAfter.bind(this);
         this.isWeekend = this.isWeekend.bind(this);
-        this.isDisabled = this.isAfter() || this.isWeekend();
         this.distance = -1;
     }
 
@@ -164,9 +165,17 @@ export default class CalendarDay extends Component {
 
         let dateNameStyle = [styles.dateName, this.props.dateNameStyle];
         let dateNumberStyle = [styles.dateNumber, this.props.dateNumberStyle];
-        if (this.props.styleWeekend && (this.props.date.isoWeekday() === 6 || this.props.date.isoWeekday() === 7)) {
-            dateNameStyle = [styles.weekendDateName, this.props.weekendDateNameStyle];
-            dateNumberStyle = [styles.weekendDateNumber, this.props.weekendDateNumberStyle];
+        if (this.props.date.isoWeekday() === 6 || this.props.date.isoWeekday() === 7) {
+          if (this.props.weekendDateNameColor) {
+            dateNameStyle.push({
+              color: this.props.weekendDateNameColor
+            })
+          }
+          if (this.props.weekendDateNumberColor) {
+            dateNumberStyle.push({
+              color: this.props.weekendDateNameColor
+            })
+          }
         }
         if (this.props.selected) {
           dateNameStyle = [styles.dateName, this.props.highlightDateNameStyle];
@@ -174,13 +183,13 @@ export default class CalendarDay extends Component {
         }
 
         let disabledStyle;
-        if (this.isDisabled) {
-          disabledStyle = styles.disabledStyle
+        if (this.props.disableWeekends && this.isWeekend()) {
+          disabledStyle = [styles.disabledStyle]
         }
 
         return (
           <TouchableOpacity ref='mainButton' onPress={this.props.onDateSelected.bind(this, this.props.date)}
-            disabled={this.isDisabled}>
+            disabled={this.props.disableWeekends && this.isWeekend()}>
             <Animated.View style={[styles.dateContainer, animObject]}>
               <Text style={[dateNameStyle, disabledStyle]}>{this.props.date.format('ddd').toUpperCase()}</Text>
               <Text style={[dateNumberStyle, disabledStyle]}>{this.props.date.date()}</Text>
