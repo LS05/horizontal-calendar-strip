@@ -8,7 +8,8 @@ import {
     Alert,
     Easing,
     TouchableHighlight,
-    ScrollView
+    ScrollView,
+    ViewPropTypes
 } from 'react-native';
 import CalendarDay from './CalendarDay';
 import CalendarButton from './CalendarButton';
@@ -27,7 +28,6 @@ arrInit(moment());
 
 /*
  * Class CalendarStrip that is representing the whole calendar strip and contains CalendarDay elements
- *
  */
 export default class CalendarStrip extends Component {
 
@@ -107,7 +107,6 @@ export default class CalendarStrip extends Component {
         this.resetAnimation = this.resetAnimation.bind(this);
         this.scrollToActiveDay = this.scrollToActiveDay.bind(this);
         this.setDay = this.setDay.bind(this);
-        this.scrollDays = this.scrollDays.bind(this);
         this.scrollDays = this.scrollDays.bind(this);
         this.updateDate = this.updateDate.bind(this);
         this.forwardDate = this.forwardDate.bind(this);

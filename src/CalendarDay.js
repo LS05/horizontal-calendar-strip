@@ -1,14 +1,11 @@
-/**
- * Created by bogdanbegovic on 8/20/16.
- */
-
 import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
     Animated,
     Easing,
-    TouchableOpacity
+    TouchableOpacity,
+    ViewPropTypes
 } from 'react-native';
 import moment from 'moment';
 import styles from './Calendar.style.js';
