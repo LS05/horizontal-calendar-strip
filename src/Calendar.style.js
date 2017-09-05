@@ -3,7 +3,6 @@ import {
 } from 'react-native';
 
 export default StyleSheet.create({
-    //CALENDAR STYLES
     calendarContainer: {
         overflow: 'hidden',
         alignItems: 'center',
@@ -29,21 +28,6 @@ export default StyleSheet.create({
         height: 20,
         resizeMode: 'contain'
     },
-    // Calendar month buttons
-    BButtonImage: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: 30,
-      height: 30,
-    },
-    FButtonImage: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: 30,
-      height: 30,
-    },
-
-    //CALENDAR DAY
     dateContainer: {
         justifyContent: 'center',
         alignItems: 'center',

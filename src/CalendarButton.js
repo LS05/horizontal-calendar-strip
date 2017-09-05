@@ -17,7 +17,7 @@ class CalendarButton extends Component {
         underlayColor={'white'}
         activeOpacity={0.7}
         onPress={() => { this.props.onPress() }}>
-        <View style={styles.button}>
+        <View>
           <Image style={styles.buttonImage} source={this.props.buttonImage}/>
         </View>
       </TouchableHighlight>
