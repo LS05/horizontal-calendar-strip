@@ -111,6 +111,7 @@ export default class CalendarStrip extends Component {
         this.updateDate = this.updateDate.bind(this);
         this.forwardDate = this.forwardDate.bind(this);
         this.backwardDate = this.backwardDate.bind(this);
+        this.isCurrentMonth = this.isCurrentMonth.bind(this);
         this.days = [];
         this.scrolled = false;
     }
@@ -236,6 +237,14 @@ export default class CalendarStrip extends Component {
         return date.isSame(this.state.selectedDate, 'day');
     }
 
+    isCurrentMonth(date) {
+      return moment().get('month') === moment(date).get('month');
+    }
+
+    isJanuary(date) {
+      return moment(date).get('month') === 0;
+    }
+
     //Function for reseting animations
     resetAnimation() {
         this.animatedValue = [];
@@ -309,6 +318,8 @@ export default class CalendarStrip extends Component {
       let opacityAnim = 1;
       let _strip = this;
       let emptyDaysList = true;
+      let isCurrentMonth = this.isCurrentMonth(this.state.startingDate);
+      let isJanuary = this.isJanuary(this.state.startingDate)
       let datesRender = this.getDatesForMonth().map((date, index) => {
           if (this.props.calendarAnimation) {
               opacityAnim = this.animatedValue[index];
@@ -343,18 +354,32 @@ export default class CalendarStrip extends Component {
               </Animated.View>
           );
       });
+      let nextButton = (() => {
+        if (isCurrentMonth === false) {
+          return (
+            <CalendarButton
+                onPress={() => {this.handleButtonPress(this.forwardDate)}}
+                buttonImage={require('./img/arrow-right.png')}/>
+          )
+        }
+      })();
+      let prevButton = (() => {
+        if (isJanuary === false) {
+          return (
+            <CalendarButton
+                onPress={() => {this.handleButtonPress(this.backwardDate)}}
+                buttonImage={require('./img/arrow-left.png')} />
+          )
+        }
+      })();
       return (
           <View style={[styles.calendarContainer, {backgroundColor: this.props.calendarColor}, this.props.style]}>
               <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
-                <CalendarButton
-                    onPress={() => {this.handleButtonPress(this.backwardDate)}}
-                    buttonImage={require('./img/arrow-left.png')} />
-                      {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>
-                          {this.formatCalendarHeader()}
-                      </Text>}
-                <CalendarButton
-                    onPress={() => {this.handleButtonPress(this.forwardDate)}}
-                    buttonImage={require('./img/arrow-right.png')} />
+                {prevButton}
+                    {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>
+                        {this.formatCalendarHeader()}
+                    </Text>}
+                {nextButton}
               </View>
               <ScrollView pagingEnabled={this.props.pagingEnabled}
                           horizontal={true}
